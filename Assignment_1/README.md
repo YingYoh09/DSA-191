@@ -28,7 +28,7 @@ Any rights in individual contents of the database are licensed under the
 [Database Contents License](http://opendatacommons.org/licenses/dbcl/1.0/) (DbCL).
 
 #### cities.csv
-Cities.csv includes coordinates, start year, and other geographic information. 
+``Cities.csv`` includes coordinates, start year, and other geographic information. 
 This table has the following columns: 
     
     - id: integer
