@@ -23,6 +23,8 @@
 #include <fstream>
 #include <cassert>
 
+#include "dbLib.h"
+
 using namespace std;
 /// Prototype declaration
 void Initialization();
@@ -43,5 +45,15 @@ void PrintReqOutput(const char* pRequest, T* pOutput, int N) {
     cout << '\n';
 }
 
+enum Options
+{
+	COUNT_LINE,COUNT_LINE_of_CITY,
+	LIST_STATION_of_CITY, LIST_LINE_of_CITY, LIST_STATION_of_LINE,
+	FIND_CITY, FIND_STATION, FIND_STATION_of_TRACK,
+	INSERT_STATION, REMOVE_STATION, UPDATE_STATION,
+	INSERT_STATION_to_LINE, REMOVE_STATION_from_LINE
+};
+
+Options resolveOptions(string& requestS, string& restS);
 
 #endif //DSA191_A1_PROCESSDATA_H

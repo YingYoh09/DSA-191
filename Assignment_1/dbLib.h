@@ -9,8 +9,8 @@
  * =========================================================================================
  */
 
-#ifndef DSA191_A1_DBLIB_H
-#define DSA191_A1_DBLIB_H
+#ifndef DBLIB_H
+#define DBLIB_H
 
 #include <iostream>
 #include <fstream>
@@ -25,23 +25,98 @@
 /* TODO: Please design your data structure carefully so that you can work with the given dataset
  *       in this assignment. The below structures are just some suggestions.
  */
+
 struct TCity {
-    // The structure to store city information
+	int		id;
+	string	name;
+
+	TCity(int id, const string& name): id(id),name(name)
+	{
+	}
 };
 
 struct TLine {
-    // The structure to store line information
+	int		id;
+	int		cityId;
+	string	cityName;
+
+	TLine(int id, int city_id, const string& city_name)
+		: id(id),
+		  cityId(city_id),
+		  cityName(city_name)
+	{
+	}
 };
 
 struct TTrack {
-    // The structure to store track information
+	int		id;
+	string	lineString;
+	int		cityId;
+
+	TTrack(int id, const string& line_string, int city_id)
+		: id(id),
+		  lineString(line_string),
+		  cityId(city_id)
+	{
+	}
+};
+
+struct TStation
+{
+	int			id;
+	string		name;
+	string		point;
+
+	TStation(int id, const string& name, const string& point)
+		: id(id),
+		  name(name),
+		  point(point)
+	{
+	}
+};
+
+struct StationLine
+{
+	int		lineId;
+	int		stationId;
+
+	StationLine(int line_id, int station_id)
+		: lineId(line_id),
+		  stationId(station_id)
+	{
+	}
 };
 
 class TDataset {
-    // This class can be a container that help you manage your tables
+public:
+	L1List<TCity>*		city;
+	L1List<TLine>*		line;
+	L1List<TTrack>*		track;
+	L1List<TStation>*	station;
+	
+	~TDataset()
+	{
+		delete city;
+		delete line;
+		delete track;
+		delete station;
+	}
+
+	TDataset()
+	{
+		city = new L1List<TCity>;
+		line = new L1List<TLine>;
+		track = new L1List<TTrack>;
+		station = new L1List<TStation>;
+	}
 };
 
 // Please add more or modify as needed
+string frontToNextComma(string &);
+
+void LoadLinesInCSV(L1List<TLine>*& lineData);
+void LoadCities(L1List<TCity>*& cityData);
+void LoadStations(L1List<TStation>*& stationData);
 
 void LoadData(void* &);
 void ReleaseData(void* &);
