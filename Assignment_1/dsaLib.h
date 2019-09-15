@@ -59,9 +59,12 @@ struct L1Item
 template <class T>
 class L1List
 {
-	L1Item<T>* _pHead; // The head pointer of linked list
-	L1Item<T>* _pRear; // The rear pointer of linked list
-	size_t _size; // number of elements in this list
+	// The head pointer of linked list
+	L1Item<T>* _pHead;
+	// The rear pointer of linked list
+	L1Item<T>* _pRear;
+	// number of elements in this list
+	size_t _size; 
 public:
 	L1List() : _pHead(nullptr), _pRear(nullptr), _size(0)
 	{
@@ -76,6 +79,15 @@ public:
 		return (_pHead == nullptr);
 	}
 
+	L1Item<T>* get_p_head() const
+	{
+		return _pHead;
+	}
+
+	L1Item<T>* get_p_rear() const
+	{
+		return _pRear;
+	}
 	size_t getSize()
 	{
 		return _size;
@@ -84,8 +96,9 @@ public:
 	T& at(int i); // give the reference to the element i-th in the list
 	T& operator[](int i); // give the reference to the element i-th in the list
 
-	/* find an element similar to a in the list. Set the found index to idx, set idx to -1 if failed. Return true if success.
-	/bool find(T& a, int& idx);*/
+	// find an element similar to a in the list. Set the found index to idx, set idx to -1 if failed. Return true if success.
+	//bool find(T& a, int& idx);
+	
 	
 	// insert an element into the list at pointer. this func cannot be false
 	int insert(L1Item<T>* pPosition, T& a)

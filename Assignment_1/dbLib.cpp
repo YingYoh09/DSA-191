@@ -19,18 +19,32 @@ string frontToNextComma(string& s)
 	return temp;
 }
 
-void LoadLinesInCSV(L1List<TLine>*& lineData)
+void LoadFlinesCSV(L1List<TLine>*& lineData)
 {
 	ifstream ifs("lines.csv", ios::in);
-	string s, cityName;
+	string s;
 	getline(ifs, s);//delete 1st line
 	int id, cityId;
 	while (getline(ifs, s)) {
 		id = stoi(frontToNextComma(s));
 		cityId = stoi(frontToNextComma(s));
-		cityName = frontToNextComma(s);
-		TLine tempTLine(id, cityId, cityName);
+		TLine tempTLine(id, cityId);
 		lineData->push_back(tempTLine);
+	}
+	ifs.close();
+}
+
+void LoadFcitiesCSV(L1List<TCity>*& cityData)
+{
+	ifstream ifs("cities.csv", ios::in);
+	string s;
+	getline(ifs, s);//delete 1st line
+	int id;string name;
+	while (getline(ifs, s)) {
+		id = stoi(frontToNextComma(s));
+		name = frontToNextComma(s);
+		TCity temp(id, name);
+		cityData->push_back(temp);
 	}
 	ifs.close();
 }
@@ -38,8 +52,9 @@ void LoadLinesInCSV(L1List<TLine>*& lineData)
 void LoadData(void*& pManager)
 {
 	TDataset* pDataset = new TDataset;
-	LoadLinesInCSV(pDataset->line);
-
+	LoadFlinesCSV(pDataset->line);
+	LoadFcitiesCSV(pDataset->city);
+	
 	pManager = pDataset;
 }
 

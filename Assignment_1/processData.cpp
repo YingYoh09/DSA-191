@@ -15,6 +15,8 @@
  * */
 using namespace std;
 
+string requestString, requestIN4;
+
 void Initialization() {
     // If you use global variables, please initialize them explicitly in this function.
 }
@@ -41,15 +43,52 @@ Options resolveOptions(string& requestS, string& restS)
 	if (requestS == "RSL") return REMOVE_STATION_from_LINE;
 }
 
+void countLine_1(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	outputData[0] = pData->line->getSize();
+}
+
+int getCityIdByName(TDataset*& pData, string nameS)
+{
+	L1Item<TCity>* node = pData->city->get_p_head();
+	while(node != nullptr && node->data.name != nameS)
+		node = node->pNext;
+	if (node == nullptr) return -1;
+	return node->data.id;
+}
+
+void countLineofCity_2(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	int cityId = getCityIdByName(pData, requestIN4);
+	if (cityId == -1)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	//count by city ID
+	int res = 0;
+	requestIN4.erase(0, 1);
+	L1Item<TLine>* node = pData->line->get_p_head();
+	while (node != nullptr)
+	{
+		if (node->data.cityId == cityId)
+			++res;
+		node = node->pNext;
+	}
+	outputData[0] = res;
+}
+
 //       pData is a pointer to a data structure that manages the dataset
    //       pOutput is a pointer reference. It is set to nullptr and student must allocate data for it in order to save the required output
    //       N is the size of output, must be a non-negative number
-void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
+void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) {
     // TODO: Implement this function for processing a request
-	string requestString = "";
+	requestString = "";
 	while (*pRequest != ' ' && *pRequest != '\0') 
 		requestString += *(pRequest++);
-	string requestIN4 = pRequest;
+	requestIN4 = ++pRequest;
 
 	int* outputData = new int[10];
 	pOutput = outputData;
@@ -57,10 +96,11 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
     switch (resolveOptions(requestString, requestIN4))
     {
 		case COUNT_LINE:
-			N = 1;
-			outputData[0] = ((TDataset*)pData)->line->getSize();
+			countLine_1((TDataset*&)pData, outputData, N);
     		break;
-		case COUNT_LINE_of_CITY: break;
+		case COUNT_LINE_of_CITY:
+			countLineofCity_2((TDataset * &)pData, outputData, N);
+			break;
 		case LIST_STATION_of_CITY: break;
 		case LIST_LINE_of_CITY: break;
 		case LIST_STATION_of_LINE: break;

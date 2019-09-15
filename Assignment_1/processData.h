@@ -30,7 +30,7 @@ using namespace std;
 void Initialization();
 void Finalization();
 
-void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &);
+void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &);
 
 template <typename T>
 void PrintReqOutput(const char* pRequest, T* pOutput, int N) {
@@ -55,5 +55,9 @@ enum Options
 };
 
 Options resolveOptions(string& requestS, string& restS);
+
+void countLine_1(TDataset*& pData, int*& outputData, int& N);
+
+void countLineofCity_2(TDataset*& pData, int*& outputData, int& N);
 
 #endif //DSA191_A1_PROCESSDATA_H

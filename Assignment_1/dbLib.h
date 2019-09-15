@@ -38,12 +38,10 @@ struct TCity {
 struct TLine {
 	int		id;
 	int		cityId;
-	string	cityName;
 
-	TLine(int id, int city_id, const string& city_name)
+	TLine(int id, int city_id)
 		: id(id),
-		  cityId(city_id),
-		  cityName(city_name)
+		  cityId(city_id)
 	{
 	}
 };
@@ -114,8 +112,8 @@ public:
 // Please add more or modify as needed
 string frontToNextComma(string &);
 
-void LoadLinesInCSV(L1List<TLine>*& lineData);
-void LoadCities(L1List<TCity>*& cityData);
+void LoadLINESinCSV(L1List<TLine>*& lineData);
+void LoadFcitiesCSV(L1List<TCity>*& cityData);
 void LoadStations(L1List<TStation>*& stationData);
 
 void LoadData(void* &);
