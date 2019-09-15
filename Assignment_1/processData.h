@@ -56,8 +56,10 @@ enum Options
 
 Options resolveOptions(string& requestS, string& restS);
 
-void countLine_1(TDataset*& pData, int*& outputData, int& N);
+void countLine_1(TDataset*& pData, L1List<int>*& pOutput, int& N);
 
-void countLineofCity_2(TDataset*& pData, int*& outputData, int& N);
+void countLineofCity_2(TDataset*& pData, L1List<int>*& pOutput, int& N);
+
+void ListStationOfCity3(TDataset*& pData, L1List<int>*& pOutput, int& N);
 
 #endif //DSA191_A1_PROCESSDATA_H

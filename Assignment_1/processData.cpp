@@ -69,7 +69,6 @@ void countLineofCity_2(TDataset*& pData, int*& outputData, int& N)
 	}
 	//count by city ID
 	int res = 0;
-	requestIN4.erase(0, 1);
 	L1Item<TLine>* node = pData->line->get_p_head();
 	while (node != nullptr)
 	{
@@ -78,6 +77,25 @@ void countLineofCity_2(TDataset*& pData, int*& outputData, int& N)
 		node = node->pNext;
 	}
 	outputData[0] = res;
+}
+
+void ListStationOfCity3(TDataset*& pData, int*& outputData, int& N)
+{
+	int cityId = getCityIdByName(pData, requestIN4);
+	if (cityId == -1)
+	{
+		N = 1;
+		outputData[0] = -1;
+		return;
+	}
+	//find by city ID
+	L1Item<TStation>* node = pData->station->get_p_head();
+	while (node != nullptr)
+	{
+		if (node->data.cityId == cityId)
+			outputData[++N - 1] = node->data.id;
+		node = node->pNext;
+	}
 }
 
 //       pData is a pointer to a data structure that manages the dataset
@@ -90,8 +108,8 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		requestString += *(pRequest++);
 	requestIN4 = ++pRequest;
 
-	int* outputData = new int[10];
-	pOutput = outputData;
+	int* outputData = new int[50000];
+	pOutput = outputData; N = 0;
 	
     switch (resolveOptions(requestString, requestIN4))
     {
@@ -101,7 +119,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case COUNT_LINE_of_CITY:
 			countLineofCity_2((TDataset * &)pData, outputData, N);
 			break;
-		case LIST_STATION_of_CITY: break;
+		case LIST_STATION_of_CITY:
+			ListStationOfCity3((TDataset * &)pData, outputData, N);
+    		break;
 		case LIST_LINE_of_CITY: break;
 		case LIST_STATION_of_LINE: break;
 		case FIND_CITY: break;

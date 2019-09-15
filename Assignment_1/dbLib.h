@@ -64,11 +64,12 @@ struct TStation
 	int			id;
 	string		name;
 	string		point;
-
-	TStation(int id, const string& name, const string& point)
+	int			cityId;
+	
+	TStation(int id, const string& name, const string& point, int cityId)
 		: id(id),
 		  name(name),
-		  point(point)
+		  point(point), cityId(cityId)
 	{
 	}
 };
@@ -112,9 +113,9 @@ public:
 // Please add more or modify as needed
 string frontToNextComma(string &);
 
-void LoadLINESinCSV(L1List<TLine>*& lineData);
+void LoadFlinesCSV(L1List<TLine>*& lineData);
 void LoadFcitiesCSV(L1List<TCity>*& cityData);
-void LoadStations(L1List<TStation>*& stationData);
+void LoadFstationsCSV(L1List<TStation>*& stationData);
 
 void LoadData(void* &);
 void ReleaseData(void* &);

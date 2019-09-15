@@ -23,7 +23,7 @@ void LoadFlinesCSV(L1List<TLine>*& lineData)
 {
 	ifstream ifs("lines.csv", ios::in);
 	string s;
-	getline(ifs, s);//delete 1st line
+	getline(ifs, s);//ignore 1st line
 	int id, cityId;
 	while (getline(ifs, s)) {
 		id = stoi(frontToNextComma(s));
@@ -38,7 +38,7 @@ void LoadFcitiesCSV(L1List<TCity>*& cityData)
 {
 	ifstream ifs("cities.csv", ios::in);
 	string s;
-	getline(ifs, s);//delete 1st line
+	getline(ifs, s);//ignore 1st line
 	int id;string name;
 	while (getline(ifs, s)) {
 		id = stoi(frontToNextComma(s));
@@ -49,11 +49,42 @@ void LoadFcitiesCSV(L1List<TCity>*& cityData)
 	ifs.close();
 }
 
+void LoadFstationsCSV(L1List<TStation>*& stationData)
+{
+	ifstream ifs("stations.csv", ios::in);
+	string s;
+	getline(ifs, s);//ignore 1st line
+	int id, cityId=0; string name, point;
+	while (getline(ifs, s)) {
+		id = stoi(frontToNextComma(s));
+		if (s[0] == '\"')
+		{
+			name = s[0];
+			for (int i = 1;s[i] != '\"';)
+			{
+				name += s[i++];
+			}
+			name += s[0];
+			s.erase(0, name.length() + 1);
+		}
+		else name = frontToNextComma(s);
+		point = frontToNextComma(s);
+		//POINT() = 7
+		point = point.substr(6, point.length() - 7);
+		s.erase(0, s.find_last_of(",") + 1);
+		cityId = stoi(s);
+		TStation temp(id, name, point, cityId);
+		stationData->push_back(temp);
+	}
+	ifs.close();
+}
+
 void LoadData(void*& pManager)
 {
 	TDataset* pDataset = new TDataset;
 	LoadFlinesCSV(pDataset->line);
 	LoadFcitiesCSV(pDataset->city);
+	LoadFstationsCSV(pDataset->station);
 	
 	pManager = pDataset;
 }
