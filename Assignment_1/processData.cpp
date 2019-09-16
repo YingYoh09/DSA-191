@@ -79,7 +79,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case FIND_STATION:
 			FindStationIdbyName_7((TDataset * &)pData, outputData, N);
 			break;
-		case FIND_STATION_of_TRACK: break;
+		case FIND_STATION_of_TRACK:
+			FindStationinTrack_8((TDataset * &)pData, outputData, N);
+			break;
 		case INSERT_STATION: break;
 		case REMOVE_STATION: break;
 		case UPDATE_STATION: break;
@@ -192,4 +194,40 @@ void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N)
 		node = node->pNext;
 	if (node == nullptr) outputData[0] = -1;
 	else outputData[0] = node->data.id;
+}
+
+void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	int spacePosition = requestIN4.find_first_of(" ");
+	int stationId = stoi(requestIN4.substr(0, spacePosition));
+	requestIN4.erase(0, spacePosition + 1);
+	int trackId = stoi(requestIN4);
+	//get Station Coordinate
+	string coordinate;
+	L1Item<TStation>* nodeStation = pData->station->get_p_head();
+	while (nodeStation != nullptr && nodeStation->data.id != stationId)
+		nodeStation = nodeStation->pNext;
+	coordinate = nodeStation->data.coordinate;
+	//get pTrack
+	L1Item<TTrack>* nodeTrack = pData->track->get_p_head();
+	while (nodeTrack != nullptr && nodeTrack->data.id != trackId)
+		nodeTrack = nodeTrack->pNext;
+	//check if not found
+	if (nodeStation == nullptr || nodeTrack == nullptr)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	//find position
+	int position = 0;
+	int found = (nodeTrack->data.lineString).find(coordinate);
+	if (found == string::npos)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	while(--found > 0)
+		if (nodeTrack->data.lineString[found] == ',') ++position;
+	outputData[0] = position;
 }

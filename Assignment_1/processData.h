@@ -72,4 +72,6 @@ void FindCityIdbyName_6(TDataset*& pData, int*& outputData, int& N);
 
 void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N);
 
+void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N);
+
 #endif //DSA191_A1_PROCESSDATA_H

@@ -19,6 +19,15 @@ string frontToNextComma(string& s)
 	return temp;
 }
 
+string frontToNextDoubleQuotes(string& s)
+{
+	string temp = "";
+	for (int i = 1; s[i] != '\"';++i)
+		temp += s[i];
+	s.erase(0, temp.length() + 3);
+	return temp;
+}
+
 void LoadFlinesCSV(L1List<TLine>*& lineData)
 {
 	ifstream ifs("lines.csv", ios::in);
@@ -58,15 +67,7 @@ void LoadFstationsCSV(L1List<TStation>*& stationData)
 	while (getline(ifs, s)) {
 		id = stoi(frontToNextComma(s));
 		if (s[0] == '\"')
-		{
-			name = s[0];
-			for (int i = 1;s[i] != '\"';)
-			{
-				name += s[i++];
-			}
-			name += s[0];
-			s.erase(0, name.length() + 1);
-		}
+			name = frontToNextDoubleQuotes(s);
 		else name = frontToNextComma(s);
 		point = frontToNextComma(s);
 		//POINT() = 7
@@ -95,6 +96,25 @@ void LoadFstation_LinesCSV(L1List<Station_Line>*& sLinesData)
 	ifs.close();
 }
 
+void LoadFtracksCSV(L1List<TTrack>*& trackData)
+{
+	ifstream ifs("tracks.csv", ios::in);
+	string s, lineString;
+	getline(ifs, s);//ignore 1st line
+	int id, cityId;
+	while (getline(ifs, s)) {
+		id = stoi(frontToNextComma(s));
+		if (s[0] == '\"')
+			lineString = frontToNextDoubleQuotes(s);
+		else lineString = "";
+		s = s.erase(0, s.find_last_of(",") + 1);
+		cityId = stoi(s);
+		TTrack temp(id, lineString, cityId);
+		trackData->push_back(temp);
+	}
+	ifs.close();
+}
+
 void LoadData(void*& pManager)
 {
 	TDataset* pDataset = new TDataset;
@@ -102,6 +122,7 @@ void LoadData(void*& pManager)
 	LoadFcitiesCSV(pDataset->city);
 	LoadFstationsCSV(pDataset->station);
 	LoadFstation_LinesCSV(pDataset->station_Line);
+	LoadFtracksCSV(pDataset->track);
 	
 	pManager = pDataset;
 }
