@@ -68,5 +68,8 @@ void ListLinesOfCity_4(TDataset*& pData, int*& outputData, int& N);
 
 void ListStationOfLines_5(TDataset*& pData, int*& outputData, int& N);
 
+void FindCityIdbyName_6(TDataset*& pData, int*& outputData, int& N);
+
+void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N);
 
 #endif //DSA191_A1_PROCESSDATA_H

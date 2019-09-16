@@ -73,8 +73,12 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case LIST_STATION_of_LINE:
 			ListStationOfLines_5((TDataset * &)pData, outputData, N);
     		break;
-		case FIND_CITY: break;
-		case FIND_STATION: break;
+		case FIND_CITY:
+			FindCityIdbyName_6((TDataset * &)pData, outputData, N);
+			break;
+		case FIND_STATION:
+			FindStationIdbyName_7((TDataset * &)pData, outputData, N);
+			break;
 		case FIND_STATION_of_TRACK: break;
 		case INSERT_STATION: break;
 		case REMOVE_STATION: break;
@@ -169,4 +173,23 @@ void ListStationOfLines_5(TDataset*& pData, int*& outputData, int& N)
 			outputData[++N - 1] = node->data.stationId;
 		node = node->pNext;
 	}
+}
+
+void FindCityIdbyName_6(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	int cityId = getCityIdByName(pData, requestIN4);
+	if (cityId == -1)
+		outputData[0] = -1;
+	else outputData[0] = cityId;
+}
+
+void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	L1Item<TStation>* node = pData->station->get_p_head();
+	while (node != nullptr && node->data.name != requestIN4)
+		node = node->pNext;
+	if (node == nullptr) outputData[0] = -1;
+	else outputData[0] = node->data.id;
 }
