@@ -79,12 +79,29 @@ void LoadFstationsCSV(L1List<TStation>*& stationData)
 	ifs.close();
 }
 
+void LoadFstation_LinesCSV(L1List<Station_Line>*& sLinesData)
+{
+	ifstream ifs("station_lines.csv", ios::in);
+	string s, buffer;
+	getline(ifs, s);//ignore 1st line
+	int stationId, lineId;
+	while (getline(ifs, s)) {
+		buffer = frontToNextComma(s);
+		stationId = stoi(frontToNextComma(s));
+		lineId = stoi(frontToNextComma(s));
+		Station_Line temp(stationId,lineId);
+		sLinesData->push_back(temp);
+	}
+	ifs.close();
+}
+
 void LoadData(void*& pManager)
 {
 	TDataset* pDataset = new TDataset;
 	LoadFlinesCSV(pDataset->line);
 	LoadFcitiesCSV(pDataset->city);
 	LoadFstationsCSV(pDataset->station);
+	LoadFstation_LinesCSV(pDataset->station_Line);
 	
 	pManager = pDataset;
 }

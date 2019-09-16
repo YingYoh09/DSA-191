@@ -62,10 +62,11 @@ void countLine_1(TDataset*& pData, int*& pOutput, int& N);
 
 void countLineofCity_2(TDataset*& pData, int*& outputData, int& N);
 
-void ListStationOfCity3(TDataset*& pData, int*& outputData, int& N);
+void ListStationOfCity_3(TDataset*& pData, int*& outputData, int& N);
 
-void ListLinesOfCity4(TDataset*& pData, int*& outputData, int& N);
+void ListLinesOfCity_4(TDataset*& pData, int*& outputData, int& N);
 
+void ListStationOfLines_5(TDataset*& pData, int*& outputData, int& N);
 
 
 #endif //DSA191_A1_PROCESSDATA_H

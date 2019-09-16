@@ -65,12 +65,14 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 			countLineofCity_2((TDataset * &)pData, outputData, N);
 			break;
 		case LIST_STATION_of_CITY:
-			ListStationOfCity3((TDataset * &)pData, outputData, N);
+			ListStationOfCity_3((TDataset * &)pData, outputData, N);
     		break;
 		case LIST_LINE_of_CITY:
-			ListLinesOfCity4((TDataset * &)pData, outputData, N);
+			ListLinesOfCity_4((TDataset * &)pData, outputData, N);
     		break;
-		case LIST_STATION_of_LINE: break;
+		case LIST_STATION_of_LINE:
+			ListStationOfLines_5((TDataset * &)pData, outputData, N);
+    		break;
 		case FIND_CITY: break;
 		case FIND_STATION: break;
 		case FIND_STATION_of_TRACK: break;
@@ -119,7 +121,7 @@ void countLineofCity_2(TDataset*& pData, int*& outputData, int& N)
 	outputData[0] = res;
 }
 
-void ListStationOfCity3(TDataset*& pData, int*& outputData, int& N)
+void ListStationOfCity_3(TDataset*& pData, int*& outputData, int& N)
 {
 	int cityId = getCityIdByName(pData, requestIN4);
 	if (cityId == -1)
@@ -138,7 +140,7 @@ void ListStationOfCity3(TDataset*& pData, int*& outputData, int& N)
 	}
 }
 
-void ListLinesOfCity4(TDataset*& pData, int*& outputData, int& N)
+void ListLinesOfCity_4(TDataset*& pData, int*& outputData, int& N)
 {
 	int cityId = getCityIdByName(pData, requestIN4);
 	if (cityId == -1)
@@ -153,6 +155,18 @@ void ListLinesOfCity4(TDataset*& pData, int*& outputData, int& N)
 	{
 		if (node->data.cityId == cityId)
 			outputData[++N - 1] = node->data.id;
+		node = node->pNext;
+	}
+}
+
+void ListStationOfLines_5(TDataset*& pData, int*& outputData, int& N)
+{
+	L1Item<Station_Line>* node = pData->station_Line->get_p_head();
+	int lineIdin4 = stoi(requestIN4);
+	while (node != nullptr)
+	{
+		if (node->data.lineId == lineIdin4)
+			outputData[++N - 1] = node->data.stationId;
 		node = node->pNext;
 	}
 }

@@ -74,24 +74,24 @@ struct TStation
 	}
 };
 
-struct StationLine
+struct Station_Line
 {
 	int		lineId;
 	int		stationId;
 
-	StationLine(int line_id, int station_id)
-		: lineId(line_id),
-		  stationId(station_id)
+	Station_Line(int station_id, int line_id)
+		: stationId(station_id), lineId(line_id)
 	{
 	}
 };
 
 class TDataset {
 public:
-	L1List<TCity>*		city;
-	L1List<TLine>*		line;
-	L1List<TTrack>*		track;
-	L1List<TStation>*	station;
+	L1List<TCity>*			city;
+	L1List<TLine>*			line;
+	L1List<TTrack>*			track;
+	L1List<TStation>*		station;
+	L1List<Station_Line>*	station_Line;
 	
 	~TDataset()
 	{
@@ -99,6 +99,7 @@ public:
 		delete line;
 		delete track;
 		delete station;
+		delete station_Line;
 	}
 
 	TDataset()
@@ -107,6 +108,7 @@ public:
 		line = new L1List<TLine>;
 		track = new L1List<TTrack>;
 		station = new L1List<TStation>;
+		station_Line = new L1List<Station_Line>;
 	}
 };
 
@@ -116,6 +118,7 @@ string frontToNextComma(string &);
 void LoadFlinesCSV(L1List<TLine>*& lineData);
 void LoadFcitiesCSV(L1List<TCity>*& cityData);
 void LoadFstationsCSV(L1List<TStation>*& stationData);
+void LoadFstation_LinesCSV(L1List<Station_Line>*& sLinesData);
 
 void LoadData(void* &);
 void ReleaseData(void* &);
