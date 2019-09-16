@@ -74,4 +74,8 @@ void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N);
 
 void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N);
 
+void InsertStation_9(TDataset*& pData, int*& outputData, int& N);
+
+void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity);
+
 #endif //DSA191_A1_PROCESSDATA_H

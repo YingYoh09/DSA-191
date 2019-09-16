@@ -82,7 +82,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case FIND_STATION_of_TRACK:
 			FindStationinTrack_8((TDataset * &)pData, outputData, N);
 			break;
-		case INSERT_STATION: break;
+		case INSERT_STATION:
+			InsertStation_9((TDataset * &)pData, outputData, N);
+			break;
 		case REMOVE_STATION: break;
 		case UPDATE_STATION: break;
 		case INSERT_STATION_to_LINE: break;
@@ -230,4 +232,33 @@ void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N)
 	while(--found > 0)
 		if (nodeTrack->data.lineString[found] == ',') ++position;
 	outputData[0] = position;
+}
+
+void InsertStation_9(TDataset*& pData, int*& outputData, int& N)
+{
+	string name, point;
+	if (requestIN4[0] == '\"')
+		name = frontToNextDoubleQuotes(requestIN4);
+	else name = frontToNextComma(requestIN4);
+	point = frontToNextComma(requestIN4);
+	//POINT() = 7
+	point = point.substr(6, point.length() - 7);
+
+	int id, cityId;
+	getMaxStation_CityId(pData, id, cityId);
+	
+	TStation temp(id, name, point, cityId);
+	pData->station->push_back(temp);
+}
+//Support InsertStation_9
+void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity)
+{
+	L1Item<TStation>* node = pData->station->get_p_head();
+	mStation = node->data.id; mCity = node->data.cityId;
+	while (node != nullptr)
+	{
+		if (mStation < node->data.id) mStation = node->data.id;
+		if (mCity < node->data.cityId) mCity = node->data.cityId;
+		node = node->pNext;
+	}
 }
