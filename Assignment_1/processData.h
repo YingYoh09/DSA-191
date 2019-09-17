@@ -57,6 +57,8 @@ enum Options
 Options resolveOptions(string& requestS, string& restS);
 
 int getCityIdByName(TDataset*& pData, string nameS);
+//pass Value
+L1Item<TStation>*& getpStationById(TDataset*& pData, int id);
 
 void countLine_1(TDataset*& pData, int*& pOutput, int& N);
 
@@ -73,9 +75,10 @@ void FindCityIdbyName_6(TDataset*& pData, int*& outputData, int& N);
 void FindStationIdbyName_7(TDataset*& pData, int*& outputData, int& N);
 
 void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N);
-
+//Request 9
 void InsertStation_9(TDataset*& pData, int*& outputData, int& N);
-
 void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity);
+//RS <station_id>
+void RemoveStation_10(TDataset*& pData, int*& outputData, int& N);
 
 #endif //DSA191_A1_PROCESSDATA_H

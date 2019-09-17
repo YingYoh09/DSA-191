@@ -85,7 +85,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case INSERT_STATION:
 			InsertStation_9((TDataset * &)pData, outputData, N);
 			break;
-		case REMOVE_STATION: break;
+		case REMOVE_STATION:
+			RemoveStation_10((TDataset * &)pData, outputData, N);
+			break;
 		case UPDATE_STATION: break;
 		case INSERT_STATION_to_LINE: break;
 		case REMOVE_STATION_from_LINE: break;
@@ -106,6 +108,14 @@ int getCityIdByName(TDataset*& pData, string nameS)
 		node = node->pNext;
 	if (node == nullptr) return -1;
 	return node->data.id;
+}
+
+L1Item<TStation>*& getpStationById(TDataset*& pData, int id)
+{
+	L1Item<TStation>* nodeStation = pData->station->get_p_head();
+	while (nodeStation != nullptr && nodeStation->data.id != id)
+		nodeStation = nodeStation->pNext;
+	return nodeStation;
 }
 
 void countLineofCity_2(TDataset*& pData, int*& outputData, int& N)
@@ -205,13 +215,9 @@ void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N)
 	int stationId = stoi(requestIN4.substr(0, spacePosition));
 	requestIN4.erase(0, spacePosition + 1);
 	int trackId = stoi(requestIN4);
-	//get Station Coordinate
-	string coordinate;
-	L1Item<TStation>* nodeStation = pData->station->get_p_head();
-	while (nodeStation != nullptr && nodeStation->data.id != stationId)
-		nodeStation = nodeStation->pNext;
-	coordinate = nodeStation->data.coordinate;
-	//get pTrack
+	//get pStation by Id
+	L1Item<TStation>* nodeStation = getpStationById(pData, stationId);
+	//get pTrack by Id
 	L1Item<TTrack>* nodeTrack = pData->track->get_p_head();
 	while (nodeTrack != nullptr && nodeTrack->data.id != trackId)
 		nodeTrack = nodeTrack->pNext;
@@ -223,7 +229,7 @@ void FindStationinTrack_8(TDataset*& pData, int*& outputData, int& N)
 	}
 	//find position
 	int position = 0;
-	int found = (nodeTrack->data.lineString).find(coordinate);
+	int found = (nodeTrack->data.lineString).find(nodeStation->data.coordinate);
 	if (found == string::npos)
 	{
 		outputData[0] = -1;
@@ -261,4 +267,30 @@ void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity)
 		if (mCity < node->data.cityId) mCity = node->data.cityId;
 		node = node->pNext;
 	}
+}
+
+void RemoveStation_10(TDataset*& pData, int*& outputData, int& N)
+{
+	int stationId = stoi(requestIN4); N = 1;
+	L1Item<TStation>* pStation = getpStationById(pData, stationId);
+	if (pStation == nullptr)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	pData->station->remove(pStation);
+	//remove all station_id in Station_Line
+	L1Item<Station_Line>* pStationLine = pData->station_Line->get_p_head();
+	L1Item<Station_Line>* temp;
+	while (pStationLine != nullptr)
+	{
+		if (pStationLine->data.stationId == stationId)
+		{
+			temp = pStationLine;
+			pStationLine = temp->pPrevious;
+			pData->station_Line->remove(temp);
+		}
+		pStationLine = pStationLine->pNext;
+	}
+	outputData[0] = 0;
 }

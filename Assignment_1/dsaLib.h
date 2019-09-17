@@ -122,7 +122,7 @@ public:
 	}
 
 	// remove an element at position i in the list. Return 0 if success, -1 otherwise.
-	int remove(L1Item<T>* pPosition)
+	int remove(L1Item<T>*& pPosition)
 	{
 		//DONE: remove a node pPosition
 		if (pPosition == nullptr) return -1;
