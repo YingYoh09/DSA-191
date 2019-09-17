@@ -88,7 +88,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case REMOVE_STATION:
 			RemoveStation_10((TDataset * &)pData, outputData, N);
 			break;
-		case UPDATE_STATION: break;
+		case UPDATE_STATION:
+			UpdateStation_11((TDataset * &)pData, outputData, N);
+    		break;
 		case INSERT_STATION_to_LINE: break;
 		case REMOVE_STATION_from_LINE: break;
     }
@@ -293,4 +295,30 @@ void RemoveStation_10(TDataset*& pData, int*& outputData, int& N)
 		pStationLine = pStationLine->pNext;
 	}
 	outputData[0] = 0;
+}
+
+void UpdateStation_11(TDataset*& pData, int*& outputData, int& N)
+{
+	int spacePosition = requestIN4.find(' ');
+	int stationId = stoi(requestIN4.substr(0, spacePosition));
+	requestIN4.erase(0, spacePosition + 1);
+
+	string name, point;
+	if (requestIN4[0] == '\"')
+		name = frontToNextDoubleQuotes(requestIN4);
+	else name = frontToNextComma(requestIN4);
+	point = frontToNextComma(requestIN4);
+	//POINT() = 7
+	point = point.substr(6, point.length() - 7);
+	
+	L1Item<TStation>* pStation = getpStationById(pData, stationId);
+	if (pStation == nullptr)
+	{
+		N = 1; outputData[0] = -1;
+		return;
+	}
+	
+	pStation->data.name = name;
+	pStation->data.coordinate = point;
+	N = 1; outputData[0] = 0;
 }

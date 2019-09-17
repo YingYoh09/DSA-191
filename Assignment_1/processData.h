@@ -81,4 +81,7 @@ void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity);
 //RS <station_id>
 void RemoveStation_10(TDataset*& pData, int*& outputData, int& N);
 
+void UpdateStation_11(TDataset*& pData, int*& outputData, int& N);
+
+
 #endif //DSA191_A1_PROCESSDATA_H
