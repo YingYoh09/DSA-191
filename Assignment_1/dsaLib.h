@@ -101,45 +101,10 @@ public:
 	
 	
 	// insert an element into the list at pointer. this func cannot be false
-	int insert(L1Item<T>* pPosition, T& a)
-	{
-		//DONE: insert node in position pointer
-		L1Item<T>* pNew = new L1Item<T>(a);
-		if (pPosition == nullptr)
-			return -1;
-		if (pPosition == _pHead)
-			_pHead = pNew;
-		if (pPosition->pPrevious != nullptr) {
-			(pPosition->pPrevious)->pNext = pNew;
-			pNew->pPrevious = pPosition->pPrevious;
-		}
-		if (pPosition != nullptr) {
-			pNew->pNext = pPosition;
-			pPosition->pPrevious = pNew;
-		}
-		++_size;
-		return 0;
-	}
+	int insert(L1Item<T>* pPosition, T& a);
 
 	// remove an element at position i in the list. Return 0 if success, -1 otherwise.
-	int remove(L1Item<T>*& pPosition)
-	{
-		//DONE: remove a node pPosition
-		if (pPosition == nullptr) return -1;
-
-		if (pPosition == _pHead)
-			_pHead = pPosition->pNext;
-		if (pPosition == _pRear)
-			_pRear = pPosition->pPrevious;
-		if (pPosition->pNext != nullptr)
-			(pPosition->pNext)->pPrevious = pPosition->pPrevious;
-		if (pPosition->pPrevious != nullptr)
-			(pPosition->pPrevious)->pNext = pPosition->pNext;
-		--_size;
-		delete pPosition;
-		pPosition = nullptr;
-		return 0;
-	}
+	int remove(L1Item<T>*& pPosition);
 
 	//
 	//// insert an element into the list at location i. Return 0 if success, -1 otherwise
@@ -160,28 +125,49 @@ public:
 	//void reverse();
 	
 	// traverse to i-th node. Return pNode if success, nullptr otherwise 
-	L1Item<T>* traverse(int i)
-	{
-		// DONE: Traverse to i-th node
-		L1Item<T>* node = _pHead;
-		for(; i > 0 && node->pNext != nullptr; --i)
-		{
-			node = node->pNext;
-		}
-		if (i == 0) return node;
-		else return nullptr;
-	}
-	
-	void traverse(void (*op)(T&))
-	{
-		// UNDONE: Your code goes here
-	}
-
-	void traverse(void (*op)(T&, void*), void* pParam)
-	{
-		// UNDONE: Your code goes here
-	}
+	L1Item<T>* traverse(int i);
 };
+
+template <class T>
+int L1List<T>::insert(L1Item<T>* pPosition, T& a)
+{
+	//DONE: insert node in position pointer
+	L1Item<T>* pNew = new L1Item<T>(a);
+	if (pPosition == nullptr)
+		return -1;
+	if (pPosition == _pHead)
+		_pHead = pNew;
+	if (pPosition->pPrevious != nullptr) {
+		(pPosition->pPrevious)->pNext = pNew;
+		pNew->pPrevious = pPosition->pPrevious;
+	}
+	if (pPosition != nullptr) {
+		pNew->pNext = pPosition;
+		pPosition->pPrevious = pNew;
+	}
+	++_size;
+	return 0;
+}
+
+template <class T>
+int L1List<T>::remove(L1Item<T>*& pPosition)
+{
+	//DONE: remove a node pPosition
+	if (pPosition == nullptr) return -1;
+
+	if (pPosition == _pHead)
+		_pHead = pPosition->pNext;
+	if (pPosition == _pRear)
+		_pRear = pPosition->pPrevious;
+	if (pPosition->pNext != nullptr)
+		(pPosition->pNext)->pPrevious = pPosition->pPrevious;
+	if (pPosition->pPrevious != nullptr)
+		(pPosition->pPrevious)->pNext = pPosition->pNext;
+	--_size;
+	delete pPosition;
+	pPosition = nullptr;
+	return 0;
+}
 
 template <class T>
 void L1List<T>::push_back(T& a)
@@ -229,6 +215,19 @@ int L1List<T>::removeLast()
 	if (remove(_pRear) == -1)
 		return -1;
 	return 0;
+}
+
+template <class T>
+L1Item<T>* L1List<T>::traverse(int i)
+{
+	// DONE: Traverse to i-th node
+	L1Item<T>* node = _pHead;
+	for (; i > 0 && node->pNext != nullptr; --i)
+	{
+		node = node->pNext;
+	}
+	if (i == 0) return node;
+	else return nullptr;
 }
 
 template <class T>

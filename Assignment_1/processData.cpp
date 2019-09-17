@@ -91,7 +91,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case UPDATE_STATION:
 			UpdateStation_11((TDataset * &)pData, outputData, N);
     		break;
-		case INSERT_STATION_to_LINE: break;
+		case INSERT_STATION_to_LINE:
+			InsertStationLine_12((TDataset * &)pData, outputData, N);
+    		break;
 		case REMOVE_STATION_from_LINE: break;
     }
 }
@@ -321,4 +323,33 @@ void UpdateStation_11(TDataset*& pData, int*& outputData, int& N)
 	pStation->data.name = name;
 	pStation->data.coordinate = point;
 	N = 1; outputData[0] = 0;
+}
+
+void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	int spacePosition = requestIN4.find(' ');
+	int stationId = stoi(requestIN4.substr(0, spacePosition));
+	requestIN4.erase(0, spacePosition + 1);
+	
+	spacePosition = requestIN4.find(' ');
+	int lineId = stoi(requestIN4.substr(0, spacePosition));
+	requestIN4.erase(0, spacePosition + 1);
+
+	int p_i = stoi(requestIN4) + 1;
+
+	L1Item<Station_Line>* node = pData->station_Line->get_p_head();
+	while (node != nullptr && p_i > 0)
+	{
+		if (node->data.lineId == lineId) --p_i;
+		if (p_i != 0) node = node->pNext;
+	}
+	if (node == nullptr || node->data.stationId == stationId)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	Station_Line temp(stationId, lineId);
+	pData->station_Line->insert(node, temp);
+	outputData[0] = 0;
 }

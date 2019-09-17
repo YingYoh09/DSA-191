@@ -83,5 +83,7 @@ void RemoveStation_10(TDataset*& pData, int*& outputData, int& N);
 
 void UpdateStation_11(TDataset*& pData, int*& outputData, int& N);
 
+void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N);
+
 
 #endif //DSA191_A1_PROCESSDATA_H
