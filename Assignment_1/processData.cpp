@@ -94,7 +94,9 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 		case INSERT_STATION_to_LINE:
 			InsertStationLine_12((TDataset * &)pData, outputData, N);
     		break;
-		case REMOVE_STATION_from_LINE: break;
+		case REMOVE_STATION_from_LINE:
+			RemoveAStationFromLine_13((TDataset * &)pData, outputData, N);
+    		break;
     }
 }
 
@@ -352,4 +354,27 @@ void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N)
 	Station_Line temp(stationId, lineId);
 	pData->station_Line->insert(node, temp);
 	outputData[0] = 0;
+}
+
+void RemoveAStationFromLine_13(TDataset*& pData, int*& outputData, int& N)
+{
+	N = 1;
+	int spacePosition = requestIN4.find(' ');
+	int stationId = stoi(requestIN4.substr(0, spacePosition));
+	requestIN4.erase(0, spacePosition + 1);
+
+	int lineId = stoi(requestIN4);
+	//remove all station_id in Station_Line
+	L1Item<Station_Line>* pStationLine = pData->station_Line->get_p_head();
+	while (pStationLine != nullptr)
+	{
+		if (pStationLine->data.stationId == stationId && pStationLine->data.lineId == lineId)
+		{
+			pData->station_Line->remove(pStationLine);
+			outputData[0] = 0;
+			return;
+		}
+		pStationLine = pStationLine->pNext;
+	}
+	outputData[0] = -1;
 }
