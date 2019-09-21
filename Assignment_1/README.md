@@ -127,9 +127,9 @@ These requests are represented in the form of input text as follows:
 | SLP <station_id> <track_id> | integer | Find the position of a station in a track. Return the index of that station if found, -1 otherwise. The order of station is determined by ``LINESTRING`` in ``tracks.csv``.|
 | IS <csv_description> | integer | Insert a station into the dataset. The information of the station is given in ``csv_description``, which includes everything you see in ``stations.csv`` except the ``id`` and ``city_id``. If this operation success, we have to receive ``station id`` as the return value.  Note that we keep track the **maximum id** of every entities in the dataset so that when you insert a new instance, the allocated id should be the ``id_max + 1`` |
 | RS <station_id> | integer | Remove a station from the dataset. As a consequence, every records related to the station must be removed. Return 0 if success, return -1 if the station does not exist or can not be removed.| 
-| US <station_id> <csv_description> | integer | Update the information of a station with id <station_id>. Return 0 if success, and -1 otherwise.|
-| ISL <station_id> <line_id> <pos> | integer | Insert a station <station_id> to a line <line_id> at index <pos>. Note that the first position has index 0. Return 0 if success, and -1 otherwise.<br> **NOTE**: The expected result of this request is that when we request LSL, the new station must stay at position <pos>. If the station exists in the line, this operation will fail and no change should be made.|
-| RSL <station_id> <line_id> | integer | Remove a station <station_id> from a line <line_id>. <br>Return 0 if success, and -1 otherwise.|
+| US <station_id> <csv_description> | integer | Update the information of a station with id ``<station_id>``. Return 0 if success, and -1 otherwise.|
+| ISL <station_id> <line_id> <p_i> | integer | Insert a station ``<station_id>`` to a line ``<line_id>`` at index ``<p_i>``. Note that the first position has index 0. Return 0 if success, and -1 otherwise.<br> **NOTE**: The expected result of this request is that when we request LSL, the new station must stay at position <pos>. If the station exists in the line, this operation will fail and no change should be made.|
+| RSL <station_id> <line_id> | integer | Remove a station ``<station_id>`` from a line ``<line_id>``. <br>Return 0 if success, and -1 otherwise.|
 
 The requests are given in the form of strings, and the location of the output 
 is given in an input address. The student must implement the function to load 
