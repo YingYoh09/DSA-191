@@ -22,8 +22,8 @@ string frontToNextComma(string& s)
 string frontToNextDoubleQuotes(string& s)
 {
 	string temp = "";
-	for (int i = 1; s[i] != '\"';++i)
-		temp += s[i];
+	int i = s.find_first_of("\"");
+	temp = s.substr(0, i);
 	s.erase(0, temp.length() + 3);
 	return temp;
 }
