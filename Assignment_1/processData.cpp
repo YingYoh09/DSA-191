@@ -155,12 +155,17 @@ void ListStationOfCity_3(TDataset*& pData, int*& outputData, int& N)
 		return;
 	}
 	//find by city ID
+	N = 0;
 	L1Item<TStation>* node = pData->station->get_p_head();
 	while (node != nullptr)
 	{
 		if (node->data.cityId == cityId)
 			outputData[++N - 1] = node->data.id;
 		node = node->pNext;
+	}
+	if (N == 0) {
+		outputData[0] = -1;
+		N = 1;
 	}
 }
 
@@ -259,7 +264,7 @@ void InsertStation_9(TDataset*& pData, int*& outputData, int& N)
 	int id, cityId;
 	getMaxStation_CityId(pData, id, cityId);
 	
-	TStation temp(id, name, point, cityId);
+	TStation temp(id + 1, name, point, cityId + 1);
 	pData->station->push_back(temp);
 }
 //Support InsertStation_9
