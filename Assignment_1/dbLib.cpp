@@ -22,8 +22,8 @@ string frontToNextComma(string& s)
 string frontToNextDoubleQuotes(string& s)
 {
 	string temp = "";
-	int i = s.find_first_of("\"");
-	temp = s.substr(0, i);
+	int i = s.find_last_of("\"");
+	temp = s.substr(1, i - 1);
 	s.erase(0, temp.length() + 3);
 	return temp;
 }
@@ -129,5 +129,5 @@ void LoadData(void*& pManager)
 
 void ReleaseData(void*& pManager)
 {
-	delete pManager;
+	delete (TDataset*) pManager;
 }
