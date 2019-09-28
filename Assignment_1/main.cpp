@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int main() {
+int m() {
     Initialization();
 
     void*   pData = nullptr;
@@ -43,4 +43,9 @@ int main() {
     ReleaseData(pData);
     Finalization();
     return 0;
+}
+int main()
+{
+	m();
+	cout << 3;
 }
