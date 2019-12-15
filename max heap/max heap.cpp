@@ -60,6 +60,7 @@ int Kmax(int* arr, int N) {
 	return data;
 }
 
+//last = N-1
 bool isMaxHeap(int* arr, int pos, int last) {
 	if (pos > last) return true;
 	int l = pos * 2 + 1;
@@ -76,6 +77,29 @@ void print(int* arr, int N) {
 	}
 }
 
+void insertKey(int* arr, int &N, int maxSize, int key)
+{
+	if (N == maxSize)
+	{
+		cout << "\nOverflow: Could not insertKey\n";
+		return;
+	}
+
+	// First insert the new key at the end 
+	N++;
+	arr[N - 1] = key;
+	reheapUp(arr, N - 1);
+}
+
+void heapSort(int* arr, int length)
+{
+	while (length)
+	{
+		int data;
+		deleteHeap(arr, length, data);
+		cout << data << ' ';
+	}
+}
 int main() {
 	ifstream inFile("inp.txt", ios::in);
 	int i = 0;
@@ -83,8 +107,11 @@ int main() {
 
 	inFile >> length;
 	int* arr = new int[length];
+	
 	while (inFile >> arr[i]) {
 		i++;
-	}cout << Kmax(arr, length);
+	}
+	BuildHeap(arr, length);
+	heapSort(arr, length);
 	system("pause");
 }

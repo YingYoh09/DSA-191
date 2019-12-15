@@ -4,26 +4,19 @@
 #include<vector>
 using namespace std;
 
-void insertionSort(int arr[], int N)
+void bubbleSort(int arr[], int length)
 {
-	for (int i = 1; i < N; i++)
+	for (int i = 0; i < length; i++)
 	{
-		for (int j = i; j > 0 && arr[j] < arr[j - 1]; j--)
+		bool flag = true;
+		for (int j = 0; j < length - i - 1; j++)
 		{
-			swap(arr[j - 1], arr[j]);
+			if (arr[j] > arr[j + 1]) {
+				swap(arr[j], arr[j + 1]);
+				flag = false;
+			}
 		}
-	}
-}
-
-void insertionSortRecursive(int arr[], int start, int end) {
-	if (end <= 0) return;
-
-	insertionSortRecursive(arr, start, end - 1);
-
-	while (end > start && arr[end] < arr[end - 1])
-	{
-		swap(arr[end], arr[end - 1]);
-		end--;
+		if (flag) break;
 	}
 }
 
@@ -51,7 +44,7 @@ int main(int argc, char** argv) {
 		arr[count] = stoi(*i);
 		count++;
 	}
-	insertionSort(arr, size);
+	bubbleSort(arr, size);
 	printArr(arr, size);
 	cin.get();
 	return 0;
