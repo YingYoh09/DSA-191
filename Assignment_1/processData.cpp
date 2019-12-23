@@ -49,9 +49,12 @@ Options resolveOptions(string& requestS, string& restS)
 void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) {
     // TODO: Implement this function for processing a request
 	requestString = "";
+	requestIN4 = "";
 	while (*pRequest != ' ' && *pRequest != '\0') 
 		requestString += *(pRequest++);
-	requestIN4 = ++pRequest;
+	if (*(pRequest) != '\0') {
+		requestIN4 = ++pRequest;
+	}
 
 	int* outputData = new int[50000];
 	pOutput = outputData; N = 0;
@@ -104,7 +107,13 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 void countLine_1(TDataset*& pData, int*& outputData, int& N)
 {
 	N = 1;
-	outputData[0] = pData->line->getSize();
+	outputData[0] = pData->city->getSize();
+	outputData[0] += pData->line->getSize();
+	outputData[0] += pData->station_Line->getSize();
+	outputData[0] += pData->station->getSize();
+	outputData[0] += pData->system_Size;
+	outputData[0] += pData->track_lines_Size;
+	outputData[0] += pData->track->getSize();
 }
 
 int getCityIdByName(TDataset*& pData, string nameS)
@@ -162,10 +171,6 @@ void ListStationOfCity_3(TDataset*& pData, int*& outputData, int& N)
 		if (node->data.cityId == cityId)
 			outputData[++N - 1] = node->data.id;
 		node = node->pNext;
-	}
-	if (N == 0) {
-		outputData[0] = -1;
-		N = 1;
 	}
 }
 
@@ -266,6 +271,8 @@ void InsertStation_9(TDataset*& pData, int*& outputData, int& N)
 	
 	TStation temp(id + 1, name, point, cityId + 1);
 	pData->station->push_back(temp);
+	N = 1;
+	outputData[0] = temp.id;
 }
 //Support InsertStation_9
 void getMaxStation_CityId(TDataset*& pData, int& mStation, int& mCity)
@@ -289,6 +296,7 @@ void RemoveStation_10(TDataset*& pData, int*& outputData, int& N)
 		outputData[0] = -1;
 		return;
 	}
+	string point = pStation->data.coordinate;
 	pData->station->remove(pStation);
 	//remove all station_id in Station_Line
 	L1Item<Station_Line>* pStationLine = pData->station_Line->get_p_head();
@@ -302,6 +310,21 @@ void RemoveStation_10(TDataset*& pData, int*& outputData, int& N)
 			pData->station_Line->remove(temp);
 		}
 		pStationLine = pStationLine->pNext;
+	}
+	//remove all station_id in tracks
+	L1Item<TTrack>* tracks = pData->track->get_p_head();
+	while (tracks != nullptr)
+	{
+		int vt = tracks->data.lineString.find(point);
+		while (vt != string::npos)
+		{
+			tracks->data.lineString.erase(vt, point.size());
+			if (tracks->data.lineString[vt] == ',')
+				tracks->data.lineString.erase(vt, 1);
+			
+			vt = tracks->data.lineString.find(point);
+		}
+		tracks = tracks->pNext;
 	}
 	outputData[0] = 0;
 }
@@ -326,6 +349,20 @@ void UpdateStation_11(TDataset*& pData, int*& outputData, int& N)
 		N = 1; outputData[0] = -1;
 		return;
 	}
+	//remove all station_id in tracks
+	string oldpoint = pStation->data.coordinate;
+	L1Item<TTrack>* tracks = pData->track->get_p_head();
+	while (tracks != nullptr)
+	{
+		int vt = tracks->data.lineString.find(oldpoint);
+		while (vt != string::npos)
+		{
+			tracks->data.lineString.erase(vt, oldpoint.size());
+			tracks->data.lineString.insert(vt, point);
+			vt = tracks->data.lineString.find(oldpoint);
+		}
+		tracks = tracks->pNext;
+	}
 	
 	pStation->data.name = name;
 	pStation->data.coordinate = point;
@@ -343,15 +380,15 @@ void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N)
 	int lineId = stoi(requestIN4.substr(0, spacePosition));
 	requestIN4.erase(0, spacePosition + 1);
 
-	int p_i = stoi(requestIN4) + 1;
-
+	int p_i = stoi(requestIN4);
+	//Xu li
 	L1Item<Station_Line>* node = pData->station_Line->get_p_head();
 	while (node != nullptr && p_i > 0)
 	{
-		if (node->data.lineId == lineId) --p_i;
-		if (p_i != 0) node = node->pNext;
+		node = node->pNext;
+		p_i--;
 	}
-	if (node == nullptr || node->data.stationId == stationId)
+	if (node == nullptr || (node->data.stationId == stationId && node->data.lineId == lineId))
 	{
 		outputData[0] = -1;
 		return;

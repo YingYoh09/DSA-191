@@ -92,6 +92,7 @@ public:
 	L1List<TTrack>*			track;
 	L1List<TStation>*		station;
 	L1List<Station_Line>*	station_Line;
+	int						system_Size, track_lines_Size;
 	
 	~TDataset()
 	{
@@ -104,6 +105,8 @@ public:
 
 	TDataset()
 	{
+		system_Size = 0;
+		track_lines_Size = 0;
 		city = new L1List<TCity>;
 		line = new L1List<TLine>;
 		track = new L1List<TTrack>;
@@ -125,4 +128,5 @@ void LoadFtracksCSV(L1List<TTrack>*& trackData);
 void LoadData(void* &);
 void ReleaseData(void* &);
 
+int CountLineOfFile(string fileName);
 #endif //DSA191_A1_DBLIB_H
