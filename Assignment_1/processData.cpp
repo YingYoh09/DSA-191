@@ -381,16 +381,26 @@ void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N)
 	requestIN4.erase(0, spacePosition + 1);
 
 	int p_i = stoi(requestIN4);
-	//Xu li
-	L1Item<TStation>* pStation = getpStationById(pData, stationId);
-	
+	//Check if station exist in line
 	L1Item<Station_Line>* node = pData->station_Line->get_p_head();
+	while (node != nullptr && (node->data.lineId != lineId || node->data.stationId != stationId))
+		node = node->pNext;
+	if (node != nullptr)
+	{
+		outputData[0] = -1;
+		return;
+	}
+	
+	//Xu li
+	node = pData->station_Line->get_p_head();
+	while (node != nullptr && node->data.lineId != lineId)
+		node = node->pNext;
 	while (node != nullptr && p_i > 0)
 	{
+		if (node->data.lineId == lineId) --p_i;
 		node = node->pNext;
-		p_i--;
 	}
-	if (node == nullptr || pStation == nullptr || (node->data.stationId == stationId && node->data.lineId == lineId))
+	if (node == nullptr)
 	{
 		outputData[0] = -1;
 		return;
