@@ -382,13 +382,15 @@ void InsertStationLine_12(TDataset*& pData, int*& outputData, int& N)
 
 	int p_i = stoi(requestIN4);
 	//Xu li
+	L1Item<TStation>* pStation = getpStationById(pData, stationId);
+	
 	L1Item<Station_Line>* node = pData->station_Line->get_p_head();
 	while (node != nullptr && p_i > 0)
 	{
 		node = node->pNext;
 		p_i--;
 	}
-	if (node == nullptr || (node->data.stationId == stationId && node->data.lineId == lineId))
+	if (node == nullptr || pStation == nullptr || (node->data.stationId == stationId && node->data.lineId == lineId))
 	{
 		outputData[0] = -1;
 		return;
