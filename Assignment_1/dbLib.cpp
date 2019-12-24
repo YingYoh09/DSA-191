@@ -115,19 +115,6 @@ void LoadFtracksCSV(L1List<TTrack>*& trackData)
 	ifs.close();
 }
 
-int CountLineOfFile(string fileName)
-{
-	ifstream ifs(fileName, ios::in);
-	int counter = 0;
-	string s;
-	while (getline(ifs,s))
-	{
-		counter++;
-	}
-	ifs.close();
-	return counter;
-}
-
 void LoadData(void*& pManager)
 {
 	TDataset* pDataset = new TDataset;
@@ -136,8 +123,6 @@ void LoadData(void*& pManager)
 	LoadFstationsCSV(pDataset->station);
 	LoadFstation_LinesCSV(pDataset->station_Line);
 	LoadFtracksCSV(pDataset->track);
-	pDataset->system_Size = CountLineOfFile("systems.csv") - 1;
-	pDataset->track_lines_Size = CountLineOfFile("track_lines.csv") - 1;
 	pManager = pDataset;
 }
 

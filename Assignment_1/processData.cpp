@@ -107,13 +107,7 @@ void ProcessRequest(const char* pRequest, void*& pData, void* &pOutput, int &N) 
 void countLine_1(TDataset*& pData, int*& outputData, int& N)
 {
 	N = 1;
-	outputData[0] = pData->city->getSize();
-	outputData[0] += pData->line->getSize();
-	outputData[0] += pData->station_Line->getSize();
-	outputData[0] += pData->station->getSize();
-	outputData[0] += pData->system_Size;
-	outputData[0] += pData->track_lines_Size;
-	outputData[0] += pData->track->getSize();
+	outputData[0] = pData->line->getSize();
 }
 
 int getCityIdByName(TDataset*& pData, string nameS)
@@ -159,8 +153,7 @@ void ListStationOfCity_3(TDataset*& pData, int*& outputData, int& N)
 	int cityId = getCityIdByName(pData, requestIN4);
 	if (cityId == -1)
 	{
-		N = 1;
-		outputData[0] = -1;
+		N = 0;
 		return;
 	}
 	//find by city ID
@@ -179,8 +172,7 @@ void ListLinesOfCity_4(TDataset*& pData, int*& outputData, int& N)
 	int cityId = getCityIdByName(pData, requestIN4);
 	if (cityId == -1)
 	{
-		N = 1;
-		outputData[0] = -1;
+		N = 0;
 		return;
 	}
 	//find by city ID
@@ -266,7 +258,7 @@ void InsertStation_9(TDataset*& pData, int*& outputData, int& N)
 	//POINT() = 7
 	point = point.substr(6, point.length() - 7);
 
-	int id, cityId;
+	int id = -1, cityId = -1;
 	getMaxStation_CityId(pData, id, cityId);
 	
 	TStation temp(id + 1, name, point, cityId + 1);
