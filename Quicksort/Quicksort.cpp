@@ -2,13 +2,6 @@
 
 using namespace std;
 
-void swap(int* a, int* b)
-{
-	int c = *a;
-	*a = *b;
-	*b = c;
-}
-
 int partition(int arr[], int left, int right)
 {
 	int pivot = left;
@@ -18,11 +11,11 @@ int partition(int arr[], int left, int right)
 	{
 		if (arr[i] < arr[pivot])
 		{
-			swap(&arr[i], &arr[smallerIndex]);
+			swap(arr[i], arr[smallerIndex]);
 			++smallerIndex;
 		}
 	}
-	swap(&arr[smallerIndex - 1], &arr[pivot]);
+	swap(arr[smallerIndex - 1], arr[pivot]);
 	return (smallerIndex - 1);
 }
 
@@ -39,7 +32,7 @@ void QuickSort(int arr[], int left, int right)
 
 int main()
 {
-	int arr[] = {19, 4, 5, 6, 3, 2, 4, 1, 2, 5, 6, 7, 3};
+	int arr[] = {19, 16, 15, 13, 6, 7, 21};
 	
 	QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
 	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)

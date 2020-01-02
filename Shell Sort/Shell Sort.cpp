@@ -46,18 +46,6 @@ int shell_sort_recursive(int* arr, int length)
 	return length + 1;
 }
 
-void insertionSortRecursive(int arr[], int start, int end) {
-	if (end <= 0) return;
-
-	insertionSortRecursive(arr, start, end - 1);
-
-	while (end > start && arr[end] < arr[end - 1])
-	{
-		swap(arr[end], arr[end - 1]);
-		end--;
-	}
-}
-
 void printArr(int arr[], int size) {
 	for (int i = 0; i < size; i++) {
 		cout << arr[i] << " ";
@@ -82,7 +70,7 @@ int main(int argc, char** argv) {
 		arr[count] = stoi(*i);
 		count++;
 	}
-	shellSort(arr, size);
+	shell_sort_recursive(arr, size);
 	printArr(arr, size);
 	cin.get();
 	return 0;
